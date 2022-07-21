@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+
+  mock:
+    build:
+      context: ./mock
+      target: 'develop-stage'
+    ports:
+    - '3000:3000'
+    volumes:
+    - ./mock:/data/mock-app
+    command: /bin/sh -c "npm run dev"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "gptw"
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/      
+      - ./mock/src/config/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+volumes:
+  postgres_data:
