@@ -1,0 +1,202 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API microservice for users.",
+    "description": "Esta api tem como objetivo a manipulação dos dados de usuários.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url":"http://localhost:3000/api/v1/",
+      "description": "Url de acesso ao crud do repositório."
+    }
+  ],
+  "paths": {
+    "/users":{
+      "get":{
+        "summary": "Visualizar todos os usuários",
+        "description": "Esta rota com método get retorna uma lista com todos os usuários listados no banco.",
+        "tags": ["Users"],
+        "security": [{"bearerAuth":[]}],
+        "responses": {
+          "401": {"description":"Unauthorized"},
+          "500": {"description":"Internal error"},
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "array",
+                  "items":{
+                    "$ref":"#/components/schemas/Users"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post":{
+        "summary": "Cadastro de usuário",
+        "description": "Esta rota com método post cadastra um novo usuário no banco.",
+        "tags": ["Users"],
+        "security": [{"bearerAuth":[]}],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/Users"
+              },
+              "example":{
+                "name":"Fillipe Yuri Vieira Araújo",
+                "email": "fillipearaujo92@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {"description":"Unauthorized"},
+          "500": {"description":"Internal error"},
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",                  
+                  "$ref":"#/components/schemas/Users"                  
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}":{
+      "get":{
+        "summary": "Busca usuário pelo ID",
+        "description": "Esta rota com método get faz uma busca nos usuários pelo id.",
+        "tags": ["Users"],
+        "security": [{"bearerAuth":[]}],
+        "parameters": [
+          {
+            "name":"id",
+            "in": "path",
+            "description": "Id do usuário para a busca",
+            "required":true
+          }
+        ],
+        "responses": {
+          "401": {"description":"Unauthorized"},
+          "500": {"description":"Internal error"},
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",                  
+                  "$ref":"#/components/schemas/Users"                  
+                }
+              }
+            }
+          }
+        }
+      },
+      "put":{
+        "summary": "Atualizar usuário",
+        "description": "Esta rota com método put atualiza um usuário no banco pelo id.",
+        "tags": ["Users"],
+        "security": [{"bearerAuth":[]}],
+        "parameters": [
+          {
+            "name":"id",
+            "in":"path",
+            "description": "Id do usuário para a busca",
+            "required":true
+          }
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/Users"
+              },
+              "example":{
+                "name":"Fillipe Yuri Vieira Araújo",
+                "email": "fillipearaujo92@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {"description":"Unauthorized"},
+          "500": {"description":"Internal error"},
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",                  
+                  "$ref":"#/components/schemas/Users"                  
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete":{
+        "summary": "Deleta usuário pelo ID",
+        "description": "Esta rota com método delete apaga um usuário no banco pelo id.",
+        "tags": ["Users"],
+        "security": [{"bearerAuth":[]}],
+        "parameters": [
+          {
+            "name":"id",
+            "in":"path",
+            "description": "Id do usuário para a busca",
+            "required":true
+          }
+        ],
+        "responses": {
+          "401": {"description":"Unauthorized"},
+          "500": {"description":"Internal error"},
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",                  
+                  "$ref":"#/components/schemas/Users"                  
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "type": "object",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "name":{
+            "type":"string"
+          },
+          "email":{
+            "type":"string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+         "type": "http",
+         "scheme": "bearer",
+         "bearerFormat": "JWT"
+      }
+    }
+  }
+}
