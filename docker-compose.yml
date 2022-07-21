@@ -9,7 +9,7 @@ services:
     ports:
     - '3000:3000'
     volumes:
-    - ./mock:/data/mock-app
+    - ./mock:/data/mock
     command: /bin/sh -c "npm run dev"
     depends_on:
       - db
