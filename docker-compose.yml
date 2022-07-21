@@ -25,6 +25,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/      
       - ./mock/src/config/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  
+  file_service:
+    build:
+      context: ./file_service
+      target: 'develop-stage'
+    ports:
+    - '5000:5000'
+    volumes:
+    - ./file_service:/data/file_service
+    command: /bin/sh -c "npm run dev"
+    depends_on:
+      - mock
 
 volumes:
   postgres_data:

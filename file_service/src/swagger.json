@@ -34,7 +34,8 @@
         },
         "responses": {
           "401": {"description":"Unauthorized"},
-          "500": {"description":"Internal error"},
+          "400": {"description": "Bad Request"},
+          "500": {"description":"Internal Server Error"},
           "200": {"description": "OK"}
         }
       }

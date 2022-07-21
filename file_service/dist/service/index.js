@@ -28,7 +28,7 @@ function validFile(req, res) {
                             users.push(user);
                         }
                     }
-                    uploadUsers(users);
+                    uploadUsers(users, res);
                 }
                 else
                     return res.status(400).json({ message: "Empty File" });
@@ -41,7 +41,7 @@ function validFile(req, res) {
     });
 }
 exports.validFile = validFile;
-function uploadUsers(users) {
+function uploadUsers(users, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const headers = {
             'Content-Type': 'application/json',
@@ -52,13 +52,9 @@ function uploadUsers(users) {
                 name: users[row][0],
                 email: users[row][1]
             };
-            yield axios.post("http://localhost:3000/api/v1/users/", data, { headers: headers })
-                .then((resp) => {
-                console.log(resp);
-            })
-                .catch((err) => {
-                console.log(err);
-            });
+            yield axios.post("http://mock:3000/api/v1/users", data, { headers: headers })
+                .then(() => res.status(200).send())
+                .catch(() => res.status(500).send());
         }
     });
 }

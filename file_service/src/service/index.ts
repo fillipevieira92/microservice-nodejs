@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { json, Request, Response } from "express";
 import { validName, validEmail } from "../middleware/validFields";
 const axios = require('axios');
 
@@ -27,7 +27,7 @@ export async function validFile( req: Request, res: Response ) {
           }
 
         }
-        uploadUsers(users)
+        uploadUsers(users, res)
         
       } else return res.status(400).json({message: "Empty File"})
 
@@ -37,7 +37,7 @@ export async function validFile( req: Request, res: Response ) {
   
 }
 
-async function uploadUsers(users: string[][]) {
+async function uploadUsers(users: string[][], res: Response) {
 
   const headers = {
     'Content-Type': 'application/json',
@@ -49,13 +49,9 @@ async function uploadUsers(users: string[][]) {
       name: users[row][0],
       email: users[row][1]
     }
-    await axios.post("http://localhost:3000/api/v1/users/", data, {headers: headers})
-    .then((resp: Response) => {
-      console.log(resp)
-    })
-    .catch((err: Response) => {
-      console.log(err)
-    })
+    await axios.post("http://mock:3000/api/v1/users", data,  {headers: headers})
+    .then(() => res.status(200).send())
+    .catch(() => res.status(500).send())
   }
 
 }
