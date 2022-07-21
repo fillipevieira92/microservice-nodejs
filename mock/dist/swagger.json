@@ -129,6 +129,7 @@
                 },
                 "responses": {
                     "401": { "description": "Unauthorized" },
+                    "404": { "description": "Not Found" },
                     "500": { "description": "Internal error" },
                     "200": {
                         "description": "OK",
@@ -158,6 +159,7 @@
                 ],
                 "responses": {
                     "401": { "description": "Unauthorized" },
+                    "404": { "description": "Not Found" },
                     "500": { "description": "Internal error" },
                     "200": {
                         "description": "OK",

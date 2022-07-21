@@ -17,7 +17,8 @@ class UserRepository {
             return yield db_config_1.pool.query("INSERT INTO users(name, email) VALUES($1, $2)", [name, email]);
         });
         this.del = (id) => __awaiter(this, void 0, void 0, function* () {
-            return (yield db_config_1.pool.query("DELETE FROM users WHERE id = $1", [id])).rows;
+            const response = yield db_config_1.pool.query("DELETE FROM users WHERE id = $1", [id]);
+            return response.rowCount > 0 ? true : false;
         });
         this.getAll = () => __awaiter(this, void 0, void 0, function* () {
             return (yield db_config_1.pool.query("SELECT * FROM users")).rows;
@@ -26,7 +27,8 @@ class UserRepository {
             return (yield db_config_1.pool.query("SELECT * FROM users WHERE id = $1", [id])).rows;
         });
         this.update = (id, name, email) => __awaiter(this, void 0, void 0, function* () {
-            return (yield db_config_1.pool.query("UPDATE users SET name = $1, email = $2 WHERE id = $3", [name, email, id])).rows;
+            const response = yield db_config_1.pool.query("UPDATE users SET name = $1, email = $2 WHERE id = $3", [name, email, id]);
+            return response.rowCount > 0 ? true : false;
         });
     }
 }

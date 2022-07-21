@@ -7,7 +7,8 @@ export class UserRepository {
   }
   
   public del = async (id:Number) => {
-    return (await pool.query("DELETE FROM users WHERE id = $1", [id])).rows
+    const response = await pool.query("DELETE FROM users WHERE id = $1", [id])
+    return response.rowCount > 0 ? true:false
   }
   
   public getAll = async () => {
@@ -19,6 +20,7 @@ export class UserRepository {
   }
   
   public update = async (id:Number, name:String, email:String) => {
-    return (await pool.query("UPDATE users SET name = $1, email = $2 WHERE id = $3", [name, email, id])).rows
+    const response = await pool.query("UPDATE users SET name = $1, email = $2 WHERE id = $3", [name, email, id])
+    return response.rowCount > 0 ? true:false
   }
 }
