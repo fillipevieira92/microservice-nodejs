@@ -47,7 +47,7 @@ async function uploadUsers(users: string[][], res: Response) {
   for (let row in users) {
     let data = {
       name: users[row][0],
-      email: users[row][1]
+      email: users[row][1].replace(' ', '')
     }
     await axios.post("http://mock:3000/api/v1/users", data,  {headers: headers})
     .then(() => res.status(200).send())

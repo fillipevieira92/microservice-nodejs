@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserRepository } from "../config/db.repository";
+import { validEmail, validName } from "../middleware/validFields";
 
 
 
@@ -12,7 +13,7 @@ export const getUsers = async (req: Request, res: Response) => {
     return res.status(200).json(response)
 
   } catch (e) {
-    return res.status(500).json({message: "Internal Error"})      
+    return res.status(500).json({message: "Internal Server Error"})      
   }   
 
 }
@@ -25,7 +26,7 @@ export const getUserById = async(req: Request, res: Response) => {
     return res.status(200).json(response)
 
   } catch (e) {
-    return res.status(500).json({message: "Internal Error"})      
+    return res.status(500).json({message: "Internal Server Error"})      
   }   
 
 }
@@ -34,11 +35,15 @@ export const setUser = async (req: Request, res: Response) => {
   
   try {      
     const {name, email} = req.body;
-    await repository.insert(name, email)
-    return res.status(200).json({message:"User created successfully", user: {name:name, email:email}})
+    if (await validName(name) && await validEmail(email)) {
+      await repository.insert(name, email)
+      return res.status(200).json({message:"User created successfully", user: {name:name, email:email}})
+
+    } else return res.status(400).json({message: "Invalid Fields"})
+
 
   } catch (e) {
-    return res.status(500).json({message: "Internal Error"})      
+    return res.status(500).json({message: "Internal Server Error"})      
   }   
   
 }
@@ -55,7 +60,7 @@ export const updateUser = async (req:Request, res:Response) => {
     return res.status(404).json({message: "Not Found"})
 
   } catch (e) {
-    return res.status(500).json({message: "Internal Error"})     
+    return res.status(500).json({message: "Internal Server Error"})     
   }
 
 }
@@ -71,7 +76,7 @@ export const deleteUser = async (req:Request, res:Response) => {
     return res.status(404).json({message: "Not Found"})
 
   } catch (e) {
-    return res.status(500).json({message: "Internal Error"})     
+    return res.status(500).json({message: "Internal Server Error"})     
   }
 
 }

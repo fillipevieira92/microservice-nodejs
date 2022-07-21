@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { is_authenticated } from "./middleware";
+import { is_authenticated } from "./middleware/auth";
 import { getUsers, getUserById, setUser, deleteUser, updateUser } from "./service";
 
 

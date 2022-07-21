@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.setUser = exports.getUserById = exports.getUsers = void 0;
 const db_repository_1 = require("../config/db.repository");
+const validFields_1 = require("../middleware/validFields");
 const repository = new db_repository_1.UserRepository();
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -18,7 +19,7 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(200).json(response);
     }
     catch (e) {
-        return res.status(500).json({ message: "Internal Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 exports.getUsers = getUsers;
@@ -29,18 +30,22 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(200).json(response);
     }
     catch (e) {
-        return res.status(500).json({ message: "Internal Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 exports.getUserById = getUserById;
 const setUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email } = req.body;
-        yield repository.insert(name, email);
-        return res.status(200).json({ message: "User created successfully", user: { name: name, email: email } });
+        if ((yield (0, validFields_1.validName)(name)) && (yield (0, validFields_1.validEmail)(email))) {
+            yield repository.insert(name, email);
+            return res.status(200).json({ message: "User created successfully", user: { name: name, email: email } });
+        }
+        else
+            return res.status(400).json({ message: "Invalid Fields" });
     }
     catch (e) {
-        return res.status(500).json({ message: "Internal Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 exports.setUser = setUser;
@@ -55,7 +60,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(404).json({ message: "Not Found" });
     }
     catch (e) {
-        return res.status(500).json({ message: "Internal Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 exports.updateUser = updateUser;
@@ -69,7 +74,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(404).json({ message: "Not Found" });
     }
     catch (e) {
-        return res.status(500).json({ message: "Internal Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 exports.deleteUser = deleteUser;

@@ -9,18 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validName = exports.validEmail = void 0;
-function validEmail(email) {
+exports.is_authenticated = void 0;
+function is_authenticated(request, response, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
+        const token = request.headers.authorization;
+        if (!token) {
+            return response.status(401).send();
+        }
+        const [_, auth] = token.split(' ');
+        if (auth == "GPTW") {
+            return next();
+        }
+        return response.status(401).send();
     });
 }
-exports.validEmail = validEmail;
-function validName(name) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const re = /^[a-z A-Záàâãéèêíóôõúç]+$/i;
-        return re.test(name);
-    });
-}
-exports.validName = validName;
+exports.is_authenticated = is_authenticated;
