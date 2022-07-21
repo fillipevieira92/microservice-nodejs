@@ -1,4 +1,4 @@
-import { json, Request, Response } from "express";
+import { Request, Response } from "express";
 import { validName, validEmail } from "../middleware/validFields";
 const axios = require('axios');
 
@@ -50,8 +50,8 @@ async function uploadUsers(users: string[][], res: Response) {
       email: users[row][1].replace(' ', '')
     }
     await axios.post("http://mock:3000/api/v1/users", data,  {headers: headers})
-    .then(() => res.status(200).send())
-    .catch(() => res.status(500).send())
+    .then(() => res.status(200).json({message: "File uploaded successfully"}).send())
+    .catch(() => res.status(500).json({message: "Internal Server Error"}).send())
   }
 
 }
