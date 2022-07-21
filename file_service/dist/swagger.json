@@ -1,0 +1,52 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Microservice for upload csv files.",
+        "description": "Esta api tem como objetivo a manipulação dos dados de usuários.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000/api/v1/",
+            "description": "Url do serviço de upload de arquivos."
+        }
+    ],
+    "paths": {
+        "/upload": {
+            "post": {
+                "summary": "Upload de arquivo csv.",
+                "description": "Esta rota com método post serve para a inserção de um arquivo do tipo .csv, para ser inserido no banco de dados da api.",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": { "description": "Unauthorized" },
+                    "500": { "description": "Internal error" },
+                    "200": { "description": "OK" }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
