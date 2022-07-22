@@ -10,7 +10,7 @@ services:
     - '3000:3000'
     volumes:
     - ./mock:/data/mock
-    command: /bin/sh -c "npm run dev"
+    command: /bin/sh -c "npm test && npm run dev"
     depends_on:
       - db
 
@@ -34,7 +34,7 @@ services:
     - '5000:5000'
     volumes:
     - ./file_service:/data/file_service
-    command: /bin/sh -c "npm run dev"
+    command: /bin/sh -c "npm test && npm run dev"
     depends_on:
       - mock
 

@@ -28,7 +28,7 @@ function validFile(req, res) {
                             users.push(user);
                         }
                     }
-                    uploadUsers(users, res);
+                    uploadUsers(users, req, res);
                 }
                 else
                     return res.status(400).json({ message: "Empty File" });
@@ -41,20 +41,26 @@ function validFile(req, res) {
     });
 }
 exports.validFile = validFile;
-function uploadUsers(users, res) {
+function uploadUsers(users, req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'JWT GPTW'
+            'Authorization': req.headers.authorization
         };
+        var success = false;
         for (let row in users) {
             let data = {
                 name: users[row][0],
                 email: users[row][1].replace(' ', '')
             };
             yield axios.post("http://mock:3000/api/v1/users", data, { headers: headers })
-                .then(() => res.status(200).json({ message: "File uploaded successfully" }).send())
-                .catch(() => res.status(500).json({ message: "Internal Server Error" }).send());
+                .then(() => success = true)
+                .catch(() => success = false);
         }
+        if (success) {
+            return res.status(200).json({ message: "File uploaded successfully" }).send();
+        }
+        else
+            return res.status(500).json({ message: "Internal Server Error" }).send();
     });
 }

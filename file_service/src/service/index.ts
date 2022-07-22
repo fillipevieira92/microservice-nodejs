@@ -27,7 +27,7 @@ export async function validFile( req: Request, res: Response ) {
           }
 
         }
-        uploadUsers(users, res)
+        uploadUsers(users, req, res)
         
       } else return res.status(400).json({message: "Empty File"})
 
@@ -37,22 +37,26 @@ export async function validFile( req: Request, res: Response ) {
   
 }
 
-async function uploadUsers(users: string[][], res: Response) {
+async function uploadUsers(users: string[][], req: Request, res: Response) {
 
   const headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'JWT GPTW'
+    'Authorization': req.headers.authorization
   }
-
+  
+  var success = false
   for (let row in users) {
     let data = {
       name: users[row][0],
       email: users[row][1].replace(' ', '')
     }
     await axios.post("http://mock:3000/api/v1/users", data,  {headers: headers})
-    .then(() => res.status(200).json({message: "File uploaded successfully"}).send())
-    .catch(() => res.status(500).json({message: "Internal Server Error"}).send())
+    .then(() => success=true)
+    .catch(() => success=false)
   }
+  if (success) {
+    return res.status(200).json({message: "File uploaded successfully"}).send()
 
+  } else return res.status(500).json({message: "Internal Server Error"}).send()
 }
 

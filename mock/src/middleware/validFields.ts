@@ -1,9 +1,9 @@
-export async function validEmail(email: string){
+export function validEmail(email: string){
   var re = /\S+@\S+\.\S+/;
-  return re.test(email);
+  return re.test(email) ? true : false;
 }
 
-export async function validName(name: string) {
+export function validName(name: string) {
   const re = /^[a-z A-Záàâãéèêíóôõúç]+$/i
-  return re.test(name)
+  return re.test(name) ? true : false;
 }
