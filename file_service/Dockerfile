@@ -16,6 +16,6 @@ RUN yarn build
 # production stage
 FROM nginx:1.15.7-alpine as production-stage
 RUN apk update && apk upgrade && apk add nodejs npm
-COPY --from=build-stage /data/file_service /usr/share/nginx/html/file_service
-EXPOSE 80
+COPY --from=build-stage /data/file_service /usr/share/nginx/html
+EXPOSE 5050
 CMD ["nginx", "-g", "daemon off;"]
