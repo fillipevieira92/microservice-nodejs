@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
     "build": "tsc --project ./tsconfig.json",
-    "test": "jest"
+    "test": "jest",
+    "prod": "node dist/index.js"
   },
   "keywords": [],
   "author": "Fillipe Vieira <fillipearaujo92@gmail.com>",

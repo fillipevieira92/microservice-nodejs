@@ -15,6 +15,7 @@ RUN yarn build
 
 # production stage
 FROM nginx:1.15.7-alpine as production-stage
-COPY --from=build-stage /mock/dist /usr/share/nginx/html
-EXPOSE 80
+RUN apk update && apk upgrade && apk add nodejs npm
+COPY --from=build-stage /data/mock /usr/share/nginx/html
+EXPOSE 3030
 CMD ["nginx", "-g", "daemon off;"]
